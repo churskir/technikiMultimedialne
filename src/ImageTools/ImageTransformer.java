@@ -19,15 +19,15 @@ public class ImageTransformer {
         return image;
     }
 
-    public BufferedImage applyDilation() {
+    public BufferedImage applyDilation(int level) {
         BufferedImage newImage = new BufferedImage(
                 image.getWidth(),
                 image.getHeight(),
                 java.awt.Image.SCALE_DEFAULT
         );
-        for (int x = 0; x < image.getHeight(); x++)
-            for (int y = 0; y < image.getWidth(); y++) {
-                if ((image.getRGB(x, y) == white) && (getNeighbourhood(x, y) < 1))
+        for (int y = 0; y < image.getHeight(); y++)
+            for (int x = 0; x < image.getWidth(); x++) {
+                if ((image.getRGB(x, y) == white) && (getNeighbourhood(x, y) < level))
                     newImage.setRGB(x, y, white);
                 else
                     newImage.setRGB(x, y, black);
@@ -36,21 +36,32 @@ public class ImageTransformer {
         return this.image;
     }
 
-    public BufferedImage applyErosion() {
+    public BufferedImage applyErosion(int level) {
+        level = 8 - level;
         BufferedImage newImage = new BufferedImage(
                 image.getWidth(),
                 image.getHeight(),
                 java.awt.Image.SCALE_DEFAULT
         );
-        for (int x = 0; x < image.getHeight(); x++)
-            for (int y = 0; y < image.getWidth(); y++) {
-                if ((image.getRGB(x, y) == black) && (getNeighbourhood(x, y) > 3))
+        for (int y = 0; y < image.getHeight(); y++)
+            for (int x = 0; x < image.getWidth(); x++) {
+                if ((image.getRGB(x, y) == black) && (getNeighbourhood(x, y) > level))
                     newImage.setRGB(x, y, black);
                 else
                     newImage.setRGB(x, y, white);
             }
         this.image = newImage;
         return this.image;
+    }
+
+    public BufferedImage applyOpening(int level) {
+        applyErosion(level);
+        return applyDilation(level);
+    }
+
+    public BufferedImage applyClosing(int level) {
+        applyDilation(level);
+        return applyErosion(level);
     }
 
     private int getNeighbourhood(int x, int y) {
@@ -75,7 +86,7 @@ public class ImageTransformer {
     }
 
     private boolean isWhite(int x, int y) {
-        if (x < 0 || x >= image.getHeight() || y < 0 || y >= image.getWidth())
+        if (x < 0 || x >= image.getWidth() || y < 0 || y >= image.getHeight())
             return true;
         return image.getRGB(x, y) == white;
     }

@@ -26,6 +26,7 @@ public class ImageHolder {
     public void showImage(BufferedImage bufferedImage) {
         Image image = SwingFXUtils.toFXImage(scaler.scale(bufferedImage), null);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         graphicsContext.drawImage(image, 0, 0);
         }
 
