@@ -29,28 +29,4 @@ public class ImageHolder {
         graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         graphicsContext.drawImage(image, 0, 0);
         }
-
-    private BufferedImage scaleImage(BufferedImage bufferedImage) {
-        int scale = Math.min(
-                Math.floorDiv(this.height, bufferedImage.getHeight()),
-                Math.floorDiv(this.width, bufferedImage.getWidth())
-        );
-        if (scale <= 1)
-            return bufferedImage;
-        BufferedImage scaledImage = new BufferedImage(
-                scale * bufferedImage.getWidth(),
-                scale * bufferedImage.getHeight(),
-                java.awt.Image.SCALE_DEFAULT
-        );
-        for (int oldY = 0, newY = 0; oldY < bufferedImage.getHeight(); oldY++){
-            for (int oldX = 0, newX = 0; oldX < bufferedImage.getWidth(); oldX++) {
-                int color = bufferedImage.getRGB(oldX, oldY);
-                System.out.println("[" + oldX + ", " + oldY + "] = " + color);
-                for (int i = 0; i < scale; i++) {
-                    scaledImage.setRGB(newX++, oldY, color);
-                }
-            }
-        }
-        return scaledImage;
-    }
 }

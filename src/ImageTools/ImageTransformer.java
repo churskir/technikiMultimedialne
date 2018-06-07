@@ -27,7 +27,7 @@ public class ImageTransformer {
         );
         for (int y = 0; y < image.getHeight(); y++)
             for (int x = 0; x < image.getWidth(); x++) {
-                if ((image.getRGB(x, y) == white) && (getNeighbourhood(x, y) < level))
+                if ((image.getRGB(x, y) == white) && (getNeighbourhood(x, y) <= level))
                     newImage.setRGB(x, y, white);
                 else
                     newImage.setRGB(x, y, black);
@@ -45,7 +45,7 @@ public class ImageTransformer {
         );
         for (int y = 0; y < image.getHeight(); y++)
             for (int x = 0; x < image.getWidth(); x++) {
-                if ((image.getRGB(x, y) == black) && (getNeighbourhood(x, y) > level))
+                if ((image.getRGB(x, y) == black) && (getNeighbourhood(x, y) >= level))
                     newImage.setRGB(x, y, black);
                 else
                     newImage.setRGB(x, y, white);
